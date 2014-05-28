@@ -4090,7 +4090,7 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <junction x="93.98" y="86.36"/>
 </segment>
 </net>
-<net name="N$22" class="0">
+<net name="LCD_GND" class="0">
 <segment>
 <pinref part="SV1" gate="G$1" pin="6"/>
 <wire x1="99.06" y1="81.28" x2="91.44" y2="81.28" width="0.1524" layer="91"/>
@@ -4153,6 +4153,7 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <wire x1="25.4" y1="104.14" x2="76.2" y2="104.14" width="0.1524" layer="91"/>
 <wire x1="76.2" y1="104.14" x2="76.2" y2="76.2" width="0.1524" layer="91"/>
 <junction x="76.2" y="76.2"/>
+<label x="93.98" y="58.42" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="MOSI" class="0">
