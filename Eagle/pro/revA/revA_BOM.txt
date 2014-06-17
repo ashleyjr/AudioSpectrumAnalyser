@@ -1,0 +1,64 @@
+Partlist exported from C:/Users/Ashley/Desktop/AudioSpectrumAnalyser/Eagle/pro/revA/revA.sch at 17/06/2014 20:33:24
+
+Part     Value                 Device                Package     Description         MF MPN OC_FARNELL OC_NEWARK PROD_ID   
+ATSAM4LS ATSAM4LSAA-AUR        ATSAM4LSAA-AUR        TQFP48                                                                
+C1       100nF                 CAP0805               0805        Capacitor                                                 
+C2       22pF                  CAP0805               0805        Capacitor                                                 
+C3       22pF                  CAP0805               0805        Capacitor                                                 
+C4       100nF                 CAP0805               0805        Capacitor                                                 
+C5       100nF                 CAP0805               0805        Capacitor                                                 
+C6       22pF                  CAP0805               0805        Capacitor                                                 
+C7       22pF                  CAP0805               0805        Capacitor                                                 
+C8       100nF                 CAP0805               0805        Capacitor                                                 
+C9       100nF                 CAP0805               0805        Capacitor                                                 
+C10      100nF                 CAP0805               0805        Capacitor                                                 
+C11      100nF                 CAP0805               0805        Capacitor                                                 
+C12      100nF                 CAP0805               0805        Capacitor                                                 
+C13      100nF                 CAP0805               0805        Capacitor                                                 
+C14      100nF                 CAP0805               0805        Capacitor                                                 
+C15      100nF                 CAP0805               0805        Capacitor                                                 
+C16      100nF                 CAP0805               0805        Capacitor                                                 
+C17      100nF                 CAP0805               0805        Capacitor                                                 
+C18      100nF                 CAP0805               0805        Capacitor                                                 
+C19      100nF                 CAP0805               0805        Capacitor                                                 
+C20      100nF                 CAP0805               0805        Capacitor                                                 
+C21      100nF                 CAP0805               0805        Capacitor                                                 
+H1       MOUNT-PAD-ROUND3.0    MOUNT-PAD-ROUND3.0    3,0-PAD     MOUNTING PAD, round                                       
+H2       MOUNT-PAD-ROUND3.0    MOUNT-PAD-ROUND3.0    3,0-PAD     MOUNTING PAD, round                                       
+H3       MOUNT-PAD-ROUND3.0    MOUNT-PAD-ROUND3.0    3,0-PAD     MOUNTING PAD, round                                       
+H4       MOUNT-PAD-ROUND3.0    MOUNT-PAD-ROUND3.0    3,0-PAD     MOUNTING PAD, round                                       
+JP1      USB-MICROB            USB-MICROB            USB-MICROB  USB Connectors                                  CONN-09505
+JP2      JUMPER-3PTH           JUMPER-3PTH           1X03                                                                  
+JTAG                           MA05-2                MA05-2      PIN HEADER                 unknown    unknown             
+Q1       20MHz                 CRYSTALHC49UV         HC49U-V     Crystals                                                  
+R1       100K                  RESISTOR1206          1206        Resistor                                                  
+R2       100K                  RESISTOR1206          1206        Resistor                                                  
+R3       100K                  RESISTOR1206          1206        Resistor                                                  
+R4       100K                  RESISTOR1206          1206        Resistor                                                  
+R5       100K                  RESISTOR1206          1206        Resistor                                                  
+R6       100K                  RESISTOR1206          1206        Resistor                                                  
+R7       100K                  RESISTOR1206          1206        Resistor                                                  
+R8       100K                  RESISTOR1206          1206        Resistor                                                  
+R9       100K                  RESISTOR1206          1206        Resistor                                                  
+R10      68R                   RESISTOR1206          1206        Resistor                                                  
+R11      68R                   RESISTOR1206          1206        Resistor                                                  
+R12      330K                  RESISTOR1206          1206        Resistor                                                  
+R13      330K                  RESISTOR1206          1206        Resistor                                                  
+R14      100K                  RESISTOR1206          1206        Resistor                                                  
+R15      100K                  RESISTOR1206          1206        Resistor                                                  
+R16      100K                  RESISTOR1206          1206        Resistor                                                  
+S1       SWITCH-MOMENTARY-2PTH SWITCH-MOMENTARY-2PTH TACTILE-PTH                                                           
+S2       SWITCH-MOMENTARY-2PTH SWITCH-MOMENTARY-2PTH TACTILE-PTH                                                           
+S3       SWITCH-MOMENTARY-2PTH SWITCH-MOMENTARY-2PTH TACTILE-PTH                                                           
+SV1                            MA05-2                MA05-2      PIN HEADER                 unknown    unknown             
+SV2                            MA05-2                MA05-2      PIN HEADER                 unknown    unknown             
+SV3                            MA05-2                MA05-2      PIN HEADER                 unknown    unknown             
+SV4                            MA05-2                MA05-2      PIN HEADER                 unknown    unknown             
+U$1      LM393                 LM393                 SO08                                                                  
+U$2      AUDIO-JACKPTH         AUDIO-JACKPTH         AUDIO-JACK  3.5mm Audio Jack                                          
+U$3      AUDIO-JACKPTH         AUDIO-JACKPTH         AUDIO-JACK  3.5mm Audio Jack                                          
+U$4      LM393                 LM393                 SO08                                                                  
+U$5      NHD_128X32            NHD_128X32            NHD_128X32                                                            
+U$6      POTTRIM               POTTRIM               TRIM_POT                                                              
+U$7      V_REG_317SMD          V_REG_317SMD          SOT223      Voltage Regulator                                         
+U1       MCP42XXX              MCP42XXX              SO014                                                                 
