@@ -2961,6 +2961,12 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <part name="U$7" library="SparkFun" deviceset="V_REG_317" device="SMD"/>
 <part name="P+9" library="SparkFun" deviceset="VCC" device=""/>
 <part name="GND15" library="SparkFun" deviceset="GND" device=""/>
+<part name="C18" library="SparkFun" deviceset="CAP" device="0805" value="100nF"/>
+<part name="C19" library="SparkFun" deviceset="CAP" device="0805" value="100nF"/>
+<part name="C20" library="SparkFun" deviceset="CAP" device="0805" value="100nF"/>
+<part name="C21" library="SparkFun" deviceset="CAP" device="0805" value="100nF"/>
+<part name="GND16" library="SparkFun" deviceset="GND" device=""/>
+<part name="P+10" library="SparkFun" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -2994,6 +3000,12 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <instance part="JP2" gate="G$1" x="175.26" y="137.16"/>
 <instance part="GND13" gate="1" x="180.34" y="129.54"/>
 <instance part="U$6" gate="G$1" x="241.3" y="109.22" rot="R180"/>
+<instance part="C18" gate="G$1" x="99.06" y="20.32"/>
+<instance part="C19" gate="G$1" x="109.22" y="20.32"/>
+<instance part="C20" gate="G$1" x="119.38" y="20.32"/>
+<instance part="C21" gate="G$1" x="129.54" y="20.32"/>
+<instance part="GND16" gate="1" x="99.06" y="10.16"/>
+<instance part="P+10" gate="1" x="99.06" y="30.48"/>
 </instances>
 <busses>
 </busses>
@@ -3155,6 +3167,24 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <pinref part="JP2" gate="G$1" pin="3"/>
 <wire x1="180.34" y1="132.08" x2="180.34" y2="134.62" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="GND16" gate="1" pin="GND"/>
+<pinref part="C18" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="12.7" x2="99.06" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="C21" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="15.24" x2="99.06" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="17.78" x2="129.54" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="15.24" x2="119.38" y2="15.24" width="0.1524" layer="91"/>
+<junction x="99.06" y="15.24"/>
+<pinref part="C19" gate="G$1" pin="2"/>
+<wire x1="119.38" y1="15.24" x2="109.22" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="15.24" x2="99.06" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="17.78" x2="109.22" y2="15.24" width="0.1524" layer="91"/>
+<junction x="109.22" y="15.24"/>
+<pinref part="C20" gate="G$1" pin="2"/>
+<wire x1="119.38" y1="17.78" x2="119.38" y2="15.24" width="0.1524" layer="91"/>
+<junction x="119.38" y="15.24"/>
+</segment>
 </net>
 <net name="N$1" class="0">
 <segment>
@@ -3299,6 +3329,24 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <wire x1="241.3" y1="116.84" x2="241.3" y2="142.24" width="0.1524" layer="91"/>
 <wire x1="241.3" y1="142.24" x2="231.14" y2="142.24" width="0.1524" layer="91"/>
 <junction x="231.14" y="142.24"/>
+</segment>
+<segment>
+<pinref part="C18" gate="G$1" pin="1"/>
+<pinref part="P+10" gate="1" pin="VCC"/>
+<wire x1="99.06" y1="25.4" x2="99.06" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="C21" gate="G$1" pin="1"/>
+<wire x1="99.06" y1="27.94" x2="99.06" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="25.4" x2="129.54" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="27.94" x2="119.38" y2="27.94" width="0.1524" layer="91"/>
+<junction x="99.06" y="27.94"/>
+<pinref part="C19" gate="G$1" pin="1"/>
+<wire x1="119.38" y1="27.94" x2="109.22" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="27.94" x2="99.06" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="109.22" y1="25.4" x2="109.22" y2="27.94" width="0.1524" layer="91"/>
+<junction x="109.22" y="27.94"/>
+<pinref part="C20" gate="G$1" pin="1"/>
+<wire x1="119.38" y1="25.4" x2="119.38" y2="27.94" width="0.1524" layer="91"/>
+<junction x="119.38" y="27.94"/>
 </segment>
 </net>
 <net name="DAC_LEFT" class="0">
