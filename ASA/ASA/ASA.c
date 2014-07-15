@@ -1,170 +1,133 @@
-/*
- * ASA.c
- *
- * Created: 04/07/2014 14:14:23
- *  Author: Ashley
- */ 
-
-
-#define _BV(n) (1 << (n))
-#define F_CPU 12000000
-#define  WIDTH 128
-
+#include "LCD.h"
+#include "lookup.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
+#include <math.h>
+#include <float.h>
 
 
-uint8_t graph[WIDTH];
+#define N 32
 
-void init_spi_master(void) { 
-	DDRB = 0xFF;
-	SPCR = _BV(SPE) | _BV(MSTR) ;
-}
-	
-void tx(uint8_t b) { 
-	SPDR = b; 
-	while(!(SPSR & _BV(SPIF))); 
-}
-	
-void data_out(unsigned char i) //Command Output Serial Interface
+int32_t x;
+int32_t fx[N];
+int32_t Fu[N/2][2];
+uint8_t mag[N/2];
+
+volatile uint8_t index;
+
+ISR(TIMER1_OVF_vect);
+void initAdc();
+void initTimer();
+
+void TRANSFORM()
 {
-	PORTB |= _BV(0);	// A0 = 1
-	PORTB &= ~_BV(1);	// CS = 0
-	tx(i);
-	PORTB |= _BV(1);	// CS = 1
-}
-
-void comm_out(unsigned char i) //Command Output Serial Interface
-{
-	PORTB &= ~_BV(0);	// A0 = 0
-	PORTB &= ~_BV(1);	// CS = 0
-	tx(i);
-	PORTB |= _BV(1);	// CS = 1
-}
-
-void initLCD()
-{
-	PORTB |= _BV(0);	// A0 = 1
-	PORTB |= _BV(1);	// CS = 1
-	PORTB |= _BV(2);	// RST = 1
-	_delay_ms(5);
-	PORTB &= ~_BV(2);	// RST = 0
-	_delay_ms(5);
-	PORTB |= _BV(2);	// RST = 1
-	_delay_ms(5);
-	
-	comm_out(0xA0);						//RAM->SEG output = normal
-	comm_out(0xAE);						//Display OFF
-	comm_out(0xC0);						//COM scan direction = normal
-	comm_out(0xA2);						//1/9 bias
-	comm_out(0x2F);						//power control set
-	comm_out(0x21);						//resistor ratio set
-	comm_out(0x81);						//Electronic volume command (set contrast)
-	comm_out(0x2F);						//Electronic volume value (contrast value)
-}
-void clearLCD(){
-	uint8_t i,j,page = 0xB0;
-	for(i=0;i<4;i++){				//32pixel display / 8 pixels per page = 4 pages
-		comm_out(page);				//send page address
-		comm_out(0x10);				//column address upper 4 bits + 0x10
-		comm_out(0x00);				//column address lower 4 bits + 0x00
-		for(j=0;j<WIDTH;j++){		//128 columns wide
-			data_out(0x00);			//send picture data
+	int16_t count,degree;
+	uint8_t i,u,k;
+	count = 0;
+	for (u=0; u<N/2; u++) {
+		for (k=0; k<N; k++) {
+			degree = (uint16_t)pgm_read_byte_near(degree_lookup + count)*2;
+			count++;
+			Fu[u][0] +=  fx[k] * (int16_t)pgm_read_word_near(cos_lookup + degree);
+			Fu[u][1] += -fx[k] * (int16_t)pgm_read_word_near(sin_lookup + degree);
 		}
-		page++;						//after 128 columns, go to next page
+		Fu[u][0] /= N;
+		Fu[u][0] /= 10000;
+		Fu[u][1] /= N;
+		Fu[u][1] /= 10000;
+		mag[u] = (uint8_t)((Fu[u][0]*Fu[u][0]) + (Fu[u][1]*Fu[u][1]));
 	}
 }
 
-void graphLCD(){
-	uint8_t i,j,bin,page;			//Page Address + 0xB0	
-	for(page=0xB3;page>=0xB0;page--){
-		comm_out(0x10);					// column address upper 4 bits + 0x10
-		comm_out(0x00);					// column address lower 4 bits + 0x00
-		comm_out(page);					// First page
-		for(i=0;i<WIDTH;i++){
-			bin = graph[i];
-			switch(page){
-				case 0xB3:
-					switch(bin){
-						case 0: data_out(0x00); break;
-						case 1: data_out(0x80); break;
-						case 2: data_out(0xC0); break;
-						case 3: data_out(0xE0); break;
-						case 4: data_out(0xF0); break;
-						case 5: data_out(0xF8); break;
-						case 6: data_out(0xFC); break;
-						case 7: data_out(0xFE); break;
-						default: data_out(0xFF); break;
-					}
-				break;
-				case 0xB2:
-					if(bin < 9){
-						data_out(0x00);
-					}else{
-						switch(bin){
-							case 9: data_out(0x80); break;
-							case 10: data_out(0xC0); break;
-							case 11: data_out(0xE0); break;
-							case 12: data_out(0xF0); break;
-							case 13: data_out(0xF8); break;
-							case 14: data_out(0xFC); break;
-							case 15: data_out(0xFE); break;
-							default: data_out(0xFF); break;
-						}
-					}
-				break;
-				case 0xB1:
-					if(bin < 17){
-						data_out(0x00);
-					}else{
-						switch(graph[i]){
-							case 17: data_out(0x80); break;
-							case 18: data_out(0xC0); break;
-							case 19: data_out(0xE0); break;
-							case 20: data_out(0xF0); break;
-							case 21: data_out(0xF8); break;
-							case 22: data_out(0xFC); break;
-							case 23: data_out(0xFE); break;
-							default: data_out(0xFF); break;
-						}
-					}
-				break;
-				case 0xB0:
-					if(bin < 25){
-						data_out(0x00);
-					}else{
-						switch(graph[i]){
-							case 25: data_out(0x80); break;
-							case 26: data_out(0xC0); break;
-							case 27: data_out(0xE0); break;
-							case 28: data_out(0xF0); break;
-							case 29: data_out(0xF8); break;
-							case 30: data_out(0xFC); break;
-							case 31: data_out(0xFE); break;
-							default: data_out(0xFF); break;
-						}
-					}
-				break;
-			}
-		}
-	}
-	comm_out(0xAF);					//Display ON
-}
+
+
 
 int main(void)
 {
 	uint8_t i;
-
+	uint8_t max;
 	
-	init_spi_master();
+	initSpiMaster();
+	initUart();
 	initLCD();
 	clearLCD();
+	initAdc();
+	initTimer();
+	
+
 
     while(1){
-		for (i=0;i<WIDTH;i++){
-			graph[i] = (rand() % 32);
+		//for (i=0;i<N;i++){
+		//	fx[i] = rand();
+		//}
+		index = 0;
+		while(index < N);
+		//txUart('A');
+		for(i=0;i<N;i++){
+			txUart((uint8_t)fx[i]);
 		}
-		graphLCD();					//show image
-		_delay_ms(1000);
+		TRANSFORM();
+		for(i=0;i<(N/2);i++){
+			graph[i] = mag[i]/8;
+		}
+		graphLCD();		
+
 	}
 }
+
+ISR(TIMER1_COMPA_vect)
+{
+	uint16_t reading;
+	// select the corresponding channel 0~7
+	// ANDing with '7' will always keep the value
+	// of 'ch' between 0 and 7
+	//0 &= 0b00000111;  // AND operation with 7
+	ADMUX = 0;//(ADMUX & 0xF8)|0;     // clears the bottom 3 bits before ORing
+	
+	// start single conversion
+	// write '1' to ADSC
+	ADCSRA |= (1<<ADSC);
+	
+	// wait for conversion to complete
+	// ADSC becomes '0' again
+	// till then, run loop continuously
+	while(ADCSRA & (1<<ADSC));
+
+	reading = (ADCH << 8)|ADC;//(ADCH << 8)|(ADCL);
+	reading = reading >> 2;
+	//txUart(reading);
+	fx[index] = 100*sin(x*reading);//(int32_t)reading;
+	//txUart((uint8_t)fx[index]);
+	index++;
+	x++;
+}
+
+void initAdc(){
+	ADMUX = (1<<REFS0);
+	
+	// ADC Enable and prescaler of 128
+	// 16000000/128 = 125000
+	ADCSRA = (1<<ADEN)|(1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
+}
+
+void initTimer()
+{
+	// initialize Timer1
+	cli();             // disable global interrupts
+	//TCCR1A = 0;        // set entire TCCR1A register to 0
+	//TCCR1B = 0;
+	
+	// enable Timer1 interrupt:
+	TIMSK1 = (1 << OCIE1A);
+	
+	// Set CS10 bit so timer runs at clock speed:
+	//TCCR1B |= (1 << CS11) ;//| (1 << CS10);
+	
+	TCCR1B = (1<<CS10);
+	OCR1A = 100;
+	
+	// enable global interrupts:
+	sei();
+}
+
