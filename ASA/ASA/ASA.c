@@ -14,6 +14,8 @@ int32_t fx[N];
 int32_t Fu[N/2][2];
 uint8_t mag[N/2];
 
+uint16_t reading;
+
 volatile uint8_t index;
 
 ISR(TIMER1_OVF_vect);
@@ -40,6 +42,25 @@ void TRANSFORM()
 	}
 }
 
+void initPot(){
+	DDRA = 0xFE;
+	PORTB = 0x00;
+	PORTB |= _BV(1);	// CS = 1
+	PORTB |= _BV(2);	// RST = 1
+	PORTB |= _BV(3);	// SHDW = 1
+	_delay_ms(100);
+	PORTB &= ~_BV(2);	// RST = 0
+	_delay_ms(100);
+	PORTB |= _BV(2);	// RST = 1
+	_delay_ms(100);
+}
+
+uint16_t writePot(uint8_t data){
+	PORTB &= ~_BV(1);	// Cs = 0
+	txSpi(0x13);		// Write byte to both pots
+	txSpi(data);
+	PORTB |= _BV(1);	// CS = 1
+}
 
 
 
@@ -50,19 +71,26 @@ int main(void)
 	
 	initSpiMaster();
 	initUart();
-	initLCD();
-	clearLCD();
-	initAdc();
-	initTimer();
+	//initLCD();
+	//clearLCD();
+	//initAdc();
+	//initTimer();
+	initPot();
 	
+	i = 0;
+	while(1){
+		writePot(i);
+	}
 
+	/*
 
     while(1){
-		//for (i=0;i<N;i++){
-		//	fx[i] = rand();
-		//}
-		index = 0;
-		while(index < N);
+		
+		for (i=0;i<N;i++){
+			fx[i] = 100*(sin(i*(reading/10)) + 1);
+		}
+		//index = 0;
+		//while(index < N);
 		//txUart('A');
 		for(i=0;i<N;i++){
 			txUart((uint8_t)fx[i]);
@@ -74,11 +102,12 @@ int main(void)
 		graphLCD();		
 
 	}
+	*/
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-	uint16_t reading;
+	//uint16_t reading;
 	// select the corresponding channel 0~7
 	// ANDing with '7' will always keep the value
 	// of 'ch' between 0 and 7
@@ -97,10 +126,10 @@ ISR(TIMER1_COMPA_vect)
 	reading = (ADCH << 8)|ADC;//(ADCH << 8)|(ADCL);
 	reading = reading >> 2;
 	//txUart(reading);
-	fx[index] = 100*sin(x*reading);//(int32_t)reading;
+	//fx[index] = 100*sin(x*reading);//(int32_t)reading;
 	//txUart((uint8_t)fx[index]);
-	index++;
-	x++;
+	//index++;
+	//x++;
 }
 
 void initAdc(){

@@ -6,8 +6,9 @@ void initSpiMaster(void) {
 	SPCR = _BV(SPE) | _BV(MSTR) ;
 }
 
-void txSpi(uint8_t b) {
+uint8_t txSpi(uint8_t b) {
 	SPDR = b;
 	while(!(SPSR & _BV(SPIF)));
+	return SPDR;
 }
 
